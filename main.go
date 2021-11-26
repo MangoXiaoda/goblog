@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -121,10 +122,20 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	// 检查是否有错误
 	if len(errors) == 0 {
 		fmt.Fprint(w, "验证通过!<br>")
-		fmt.Fprintf(w, "title 的值为：%v <br>", title)
-		fmt.Fprintf(w, "title 的长度为：%v <br>", utf8.RuneCountInString(title))
-		fmt.Fprintf(w, "body 的值为：%v <br>", body)
-		fmt.Fprintf(w, "body 的长度为：%v <br>", utf8.RuneCountInString(body))
+		// fmt.Fprintf(w, "title 的值为：%v <br>", title)
+		// fmt.Fprintf(w, "title 的长度为：%v <br>", utf8.RuneCountInString(title))
+		// fmt.Fprintf(w, "body 的值为：%v <br>", body)
+		// fmt.Fprintf(w, "body 的长度为：%v <br>", utf8.RuneCountInString(body))
+
+		lastInsertID, err := saveArticleToDB(title, body)
+		if lastInsertID > 0 {
+			fmt.Fprint(w, "插入成功，ID为"+strconv.FormatInt(lastInsertID, 10))
+		} else {
+			checkError(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprint(w, "500 服务器内部错误")
+		}
+
 	} else {
 
 		storeURL, _ := router.Get("articles.store").URL()
@@ -148,6 +159,40 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Fprintf(w, "r.PostForm 中 title 的值为：%v <br>", r.PostFormValue("title"))
 	// fmt.Fprintf(w, "r.Form 中 test 的值为: %v <br>", r.FormValue("test"))
 	// fmt.Fprintf(w, "r.PostForm 中 test 的值为：%v <br>", r.PostFormValue("test"))
+}
+
+func saveArticleToDB(title string, body string) (int64, error) {
+
+	// 变量初始化
+	var (
+		id   int64
+		err  error
+		rs   sql.Result
+		stmt *sql.Stmt
+	)
+
+	// 1、获取一个 prepare 声明语句
+	stmt, err = db.Prepare("INSERT INTO articles (title, body) VALUES(?,?)")
+	// 例行的错误检测
+	if err != nil {
+		return 0, err
+	}
+
+	// 2、在此函数运行结束后关闭此语句，防止占用 SQL 连接
+	defer stmt.Close()
+
+	// 3、执行请求，传参进入绑定的内容
+	rs, err = stmt.Exec(title, body)
+	if err != nil {
+		return 0, err
+	}
+
+	// 4、插入成功的话，会返回自增 ID
+	if id, err = rs.LastInsertId(); id > 0 {
+		return id, nil
+	}
+
+	return 0, err
 }
 
 func forceHTMLMiddleware(next http.Handler) http.Handler {
