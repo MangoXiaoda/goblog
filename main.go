@@ -191,21 +191,7 @@ func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		title := r.PostFormValue("title")
 		body := r.PostFormValue("body")
 
-		errors := make(map[string]string)
-
-		// 验证标题
-		if title == "" {
-			errors["title"] = "标题不能为空"
-		} else if utf8.RuneCountInString(title) < 3 || utf8.RuneCountInString(title) > 40 {
-			errors["title"] = "标题长度需介于 3-40"
-		}
-
-		// 验证内容
-		if body == "" {
-			errors["body"] = "内容不能为空"
-		} else if utf8.RuneCountInString(body) < 10 {
-			errors["body"] = "内容长度需大于或等于 10 个字节"
-		}
+		errors := validatearticleFormData(title, body)
 
 		if len(errors) == 0 {
 
@@ -255,6 +241,27 @@ type ArticlesFormData struct {
 	Errors      map[string]string
 }
 
+// 验证表单规则
+func validatearticleFormData(title string, body string) map[string]string {
+	errors := make(map[string]string)
+
+	// 验证标题
+	if title == "" {
+		errors["title"] = "标题不能为空"
+	} else if utf8.RuneCountInString(title) < 3 || utf8.RuneCountInString(title) > 40 {
+		errors["title"] = "标题长度需介于 3-40"
+	}
+
+	// 验证内容
+	if body == "" {
+		errors["body"] = "内容不能为空"
+	} else if utf8.RuneCountInString(body) < 10 {
+		errors["body"] = "内容长度需大于或等于 10 个字节"
+	}
+
+	return errors
+}
+
 func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	// err := r.ParseForm()
 	// if err != nil {
@@ -272,21 +279,10 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.PostFormValue("title")
 	body := r.PostFormValue("body")
 
-	errors := make(map[string]string)
+	// errors := make(map[string]string)
 
-	// 验证标题
-	if title == "" {
-		errors["title"] = "标题不能为空"
-	} else if utf8.RuneCountInString(title) < 3 || utf8.RuneCountInString(title) > 40 {
-		errors["title"] = "标题长度需介于 3-40"
-	}
-
-	// 验证内容
-	if body == "" {
-		errors["body"] = "内容不能为空"
-	} else if utf8.RuneCountInString(body) < 10 {
-		errors["body"] = "内容长度需大于或等于 10 个字节"
-	}
+	// 验证表单提交数据
+	errors := validatearticleFormData(title, body)
 
 	// 检查是否有错误
 	if len(errors) == 0 {
