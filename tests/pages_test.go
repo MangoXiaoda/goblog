@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHomePage(t *testing.T) {
+func TestAllPage(t *testing.T) {
 	baseURL := "http://localhost:3000"
 
 	// 1、声明加初始化测试数据
