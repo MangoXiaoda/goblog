@@ -20,20 +20,6 @@ import (
 var router *mux.Router
 var db *sql.DB
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>Hello, 欢迎来到 goblog！</h1>")
-}
-
-func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "此博客是用以记录编程笔记，如您有反馈或建议，请联系 "+
-		"<a href=\"http://www.baidu.com\">mangoDa")
-}
-
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprint(w, "<h1>请求页面未找到 :(</h1><p>如有疑惑，请联系我们。</p>")
-}
-
 // Article 对应一条文章数据
 type Article struct {
 	Title, Body string
@@ -412,23 +398,6 @@ func articlesDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// RouteName2URL 通过路由名称来获取 URL
-func RouteName2URL(routeName string, pairs ...string) string {
-	url, err := router.Get(routeName).URL(pairs...)
-
-	if err != nil {
-		logger.LogError(err)
-		return ""
-	}
-
-	return url.String()
-}
-
-// Int64ToString 将 int64 转换为 string
-func Int64ToString(num int64) string {
-	return strconv.FormatInt(num, 10)
-}
-
 // Delete 方法用以从数据库中删除单条记录
 func (a Article) Delete() (rowsAffected int64, err error) {
 
@@ -476,10 +445,10 @@ func main() {
 	router.Use(forceHTMLMiddleware)
 
 	// 通过命名路由获取 URL 示例
-	homeURL, _ := router.Get("home").URL()
-	fmt.Println("homeURL：", homeURL)
-	articleURL, _ := router.Get("articles.show").URL("id", "23")
-	fmt.Println("articleURL：", articleURL)
+	// homeURL, _ := router.Get("home").URL()
+	// fmt.Println("homeURL：", homeURL)
+	// articleURL, _ := router.Get("articles.show").URL("id", "23")
+	// fmt.Println("articleURL：", articleURL)
 
 	http.ListenAndServe(":3000", removeTrailingSlash(router))
 }
