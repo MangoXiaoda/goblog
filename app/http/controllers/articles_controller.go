@@ -46,8 +46,7 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 			ParseFiles("resources/views/articles/show.gohtml")
 		logger.LogError(err)
 
-		err = tmpl.Execute(w, article)
-		logger.LogError(err)
+		tmpl.Execute(w, article)
 	}
 
 }
