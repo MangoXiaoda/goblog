@@ -6,13 +6,6 @@ import (
 	"goblog/pkg/types"
 )
 
-// Article 文章模型
-type Article struct {
-	ID    uint64
-	Title string
-	Body  string
-}
-
 // Get 通过 ID 获取文章
 func Get(idstr string) (Article, error) {
 	var article Article
