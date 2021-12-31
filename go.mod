@@ -14,6 +14,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/thedevsaddam/govalidator v1.9.10 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 	gorm.io/driver/mysql v1.2.1 // indirect
 )
