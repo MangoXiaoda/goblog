@@ -14,11 +14,7 @@
       <div class="col-md-6">
         <input id="name" type="text" class="form-control {{if .Errors.name }}is-invalid {{end}}" name="name" value="{{ .User.Name }}" required="" autofocus="">
         {{ with .Errors.name }}
-          <div class="invalid-feedback">
-            {{ range $message := . }}
-              <p>{{ $message }}</p>
-            {{ end }}
-          </div>
+          {{ template "invalid-feedback" . }}
         {{ end }}
       </div>
     </div>
@@ -28,11 +24,7 @@
       <div class="col-md-6">
         <input id="email" type="email" class="form-control {{if .Errors.email }}is-invalid {{end}}" name="email" value="{{ .User.Email }}" required="">
         {{ with .Errors.email }}
-          <div class="invalid-feedback">
-            {{ range $message := . }}
-              <p>{{ $message }}</p>
-            {{ end }}
-          </div>
+          {{ template "invalid-feedback" . }}
         {{ end }}
       </div>
     </div>
@@ -42,11 +34,7 @@
       <div class="col-md-6">
         <input id="password" type="password" class="form-control {{if .Errors.password }}is-invalid {{end}}" name="password" value="{{ .User.Password }}" required="">
         {{ with .Errors.password }}
-          <div class="invalid-feedback">
-            {{ range $message := . }}
-              <p>{{ $message }}</p>
-            {{ end }}
-          </div>
+          {{ template "invalid-feedback" . }}
         {{ end }}
       </div>
     </div>
@@ -56,11 +44,7 @@
       <div class="col-md-6">
         <input id="password-confirm" type="password" class="form-control {{if .Errors.password_confirm }}is-invalid {{end}}" name="password_confirm" value="{{ .User.PasswordConfirm }}" required="">
         {{ with .Errors.password_confirm }}
-          <div class="invalid-feedback">
-            {{ range $message := . }}
-              <p>{{ $message }}</p>
-            {{ end }}
-          </div>
+          {{ template "invalid-feedback" . }}
         {{ end }}
       </div>
     </div>
