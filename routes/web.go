@@ -36,6 +36,7 @@ func RegisterWebRoutes(r *mux.Router) {
 	// 登录相关
 	r.HandleFunc("/auth/login", auc.Login).Methods("GET").Name("auth.login")
 	r.HandleFunc("/auth/dologin", auc.DoLogin).Methods("POST").Name("auth.login")
+	r.HandleFunc("/auth/logout", auc.Logout).Methods("POST").Name("auth.logout")
 
 	// 静态资源
 	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./public")))
