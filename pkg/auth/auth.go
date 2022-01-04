@@ -65,6 +65,6 @@ func Logout() {
 }
 
 // chenck 检测是否登录
-func check() bool {
+func Check() bool {
 	return len(_getUID()) > 0
 }
