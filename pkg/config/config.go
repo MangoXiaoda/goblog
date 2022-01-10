@@ -7,11 +7,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Initialize 配置信息初始化
-func Initialize() {
-	// 触发加载本目录下其他文件夹中的 init 方法
-}
-
 // Viper Viper 库实例
 var Viper *viper.Viper
 
